@@ -4,23 +4,25 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const generateAiWord = async (input) => {
-    if (!process.env.GEMINI_API_KEY) {
-        throw new Error('500');
-    }
+    if (!process.env.GEMINI_API_KEY) throw new Error('500');
 
     try {
-        const aiResponse = await axios.post(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
+        const response = await axios.post(
+            'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
             {
                 contents: [{ parts: [{ text: `Respond with exactly ONE word to: ${input}` }] }]
+            },
+            {
+                headers: { 'x-goog-api-key': process.env.GEMINI_API_KEY }
             }
         );
 
-        const text = aiResponse.data.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
-        const words = text.trim().split(/\s+/);
-        return words[0].replace(/[^a-zA-Z0-9]/g, '');
+        const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Error";
+        const word = text.trim().split(/\s+/)[0].replace(/[^a-zA-Z0-9]/g, '');
+
+        if (!word) throw new Error('500');
+        return word;
     } catch (error) {
-        console.error('AI Service Error:', error.message);
         throw new Error('500');
     }
 };
