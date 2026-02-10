@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: bfhl-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: OFFICIAL_EMAIL
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
