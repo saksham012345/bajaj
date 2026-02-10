@@ -73,6 +73,12 @@ app.get('/health', (req, res) => {
     });
 });
 
+app.get('/bfhl', (req, res) => {
+    res.json({
+        "operation_code": 1
+    });
+});
+
 app.post('/bfhl', async (req, res) => {
     try {
         const keys = Object.keys(req.body);
