@@ -1,0 +1,6 @@
+node_modules
+.env
+README.md
+test_ai.js
+debug_gemini.js
+verify_maharashtra.js
